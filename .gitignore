@@ -1,0 +1,42 @@
+.vscode# Byggartefakter
+/build/
+/CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles/
+Makefile
+compile_commands.json
+
+sdkconfig
+sdkconfig.old
+.rom/
+.esp_idf_monitor_port
+
+.vscode/
+*.code-workspace
+
+*.exe
+*.dll
+*.so
+*.dylib
+*.o
+*.obj
+*.out
+*.map
+*.elf
+
+*~
+*.bak
+*.swp
+*.swo
+.DS_Store # macOS specifikt
+Thumbs.db # Windows specifikt
+
+*.log
+
+.idea/ # IntelliJ IDEA
+.project # Eclipse
+.cproject # Eclipse
+*.user # Visual Studio
+*.suo # Visual Studio
+*.aps # Visual Studio
+*.ncb # Visual Studio
