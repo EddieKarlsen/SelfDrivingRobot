@@ -9,7 +9,8 @@ include_directories(${PROJECT_SOURCE_DIR}/Include)
 
 # Lista alla källfiler
 file(GLOB SOURCES
-     "${PROJECT_SOURCE_DIR}/Sourcefiles/*.c")
+     "${PROJECT_SOURCE_DIR}/Sourcefiles/*.c"
+     "${PROJECT_SOURCE_DIR}/Sourcefiles/Simulation/*.c")
 
 # Skapa exekverbar fil
 add_executable(SelfDrivingRobot ${SOURCES})

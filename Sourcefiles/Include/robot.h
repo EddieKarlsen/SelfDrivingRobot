@@ -1,10 +1,11 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
-#include "configuration.h"
-#include "chromosome.h" 
+#include "types.h"
 #include <math.h>
+#include "configuration.h"
 #include <stdbool.h>
+
 
 typedef struct {
     float x, y;
@@ -21,12 +22,7 @@ typedef struct {
 
 extern Sensor sensors[5];
 
-typedef enum {
-    FORWARD,
-    TURN_LEFT_45,   
-    TURN_RIGHT_45,
-    BACKWARD
-} Action;
+
 
 typedef struct {
     Robot robot;
@@ -50,7 +46,7 @@ Sensor sensors[5] = {
 
 bool execute_action(Robot *robot, Action action, int **maze);
 bool reached_goal(Robot *robot);
-bool check_collision(float x, float y, float angle, int **maze);
+bool check_collision(Robot *robot, float x, float y, float angle, int **maze);
 float simulate_ultrasonic(Robot *robot, int sensor_id, int **maze, int width, int height);
 
 void initialize_robot(Robot *robot, float start_x, float start_y);

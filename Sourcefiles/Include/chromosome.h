@@ -1,8 +1,15 @@
 #ifndef CHROMOSOME_H
 #define CHROMOSOME_H
 
-#include "robot.h"
+#include "types.h"
 extern int goal_x, goal_y;
+
+typedef enum {
+    FORWARD,
+    TURN_LEFT_45,   
+    TURN_RIGHT_45,
+    BACKWARD
+} Action;
 
 typedef struct {
     float sensor_weights[5];
