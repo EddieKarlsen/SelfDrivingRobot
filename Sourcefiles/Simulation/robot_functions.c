@@ -9,21 +9,22 @@
 #define TURN_ANGLE_45 (M_PI / 4.0f)
 #define GOAL_THRESHOLD 2.0f
 
-bool execute_action(Robot *robot, Action action, int **maze) {
-    // Spara nuvarande position för att kunna återställa vid kollision
+bool execute_action(Individual *individual, Action action, int **maze) {
+    Robot *robot = &individual->robot;
+    
+    // Spara nuvarande position
     float old_x = robot->x;
     float old_y = robot->y;
     float old_angle = robot->angle;
     
     switch(action) {
         case FORWARD: {
-            // Beräkna ny position
             float new_x = robot->x + cos(robot->angle) * MOVE_DISTANCE;
             float new_y = robot->y + sin(robot->angle) * MOVE_DISTANCE;
             
-            // Kontrollera kollision innan flytt
             if (check_collision(robot, new_x, new_y, robot->angle, maze)) {
-                return false; // Kollision - rör dig inte
+                individual->collision_count++;
+                return false;
             }
             
             robot->x = new_x;
@@ -33,23 +34,21 @@ bool execute_action(Robot *robot, Action action, int **maze) {
         
         case TURN_LEFT_45:
             robot->angle -= TURN_ANGLE_45;
-            // Normalisera vinkel till [0, 2π]
             while(robot->angle < 0) robot->angle += 2 * M_PI;
             break;
-            
+        
         case TURN_RIGHT_45:
             robot->angle += TURN_ANGLE_45;
-            // Normalisera vinkel till [0, 2π]
             while(robot->angle >= 2 * M_PI) robot->angle -= 2 * M_PI;
             break;
-            
+        
         case BACKWARD: {
-            // Flytta bakåt
             float new_x = robot->x - cos(robot->angle) * MOVE_DISTANCE;
             float new_y = robot->y - sin(robot->angle) * MOVE_DISTANCE;
             
             if (check_collision(robot, new_x, new_y, robot->angle, maze)) {
-                return false; // Kollision - rör dig inte
+                individual->collision_count++;
+                return false;
             }
             
             robot->x = new_x;
@@ -58,10 +57,10 @@ bool execute_action(Robot *robot, Action action, int **maze) {
         }
         
         default:
-            return false; // Okänd aktion
+            return false;
     }
     
-    return true; // Framgångsrik rörelse
+    return true;
 }
 
 bool check_collision(Robot *robot, float x, float y, float angle, int **maze) {
@@ -91,6 +90,7 @@ bool check_collision(Robot *robot, float x, float y, float angle, int **maze) {
         
         // Kontrollera vägg
         if(maze[grid_y][grid_x] == 1) {
+            
             return true; // Kollision med vägg
         }
     }
@@ -146,9 +146,9 @@ void get_direction_vector(Robot *robot, float *dx, float *dy) {
     *dy = sin(robot->angle);
 }
 
-// Debug-funktion för att skriva ut robotstatus
-void print_robot_status(Robot *robot) {
-    printf("Robot: pos(%.2f, %.2f), angle=%.2f rad (%.1f°), orient=%d\n",
-           robot->x, robot->y, robot->angle, 
-           robot->angle * 180.0f / M_PI, robot->orientation);
-}
+// // Debug-funktion för att skriva ut robotstatus
+// void print_robot_status(Robot *robot) {
+//     printf("Robot: pos(%.2f, %.2f), angle=%.2f rad (%.1f°), orient=%d\n",
+//            robot->x, robot->y, robot->angle, 
+//            robot->angle * 180.0f / M_PI, robot->orientation);
+// }

@@ -223,6 +223,10 @@ float calculate_fitness(Individual *individual, int steps_taken) {
     float distance_to_goal = sqrt(pow(robot->x - goal_x, 2) + pow(robot->y - goal_y, 2));
     float distance_penalty = gamma * distance_to_goal;
     
+    // collison penalty
+    float number_of_collisons = delta;
+    
+    
     // Bonus om målet nås
     float goal_bonus = 0;
     if(distance_to_goal < 2.0) {
@@ -230,17 +234,17 @@ float calculate_fitness(Individual *individual, int steps_taken) {
     }
     
     // Högre fitness = bättre (negativ kostnad)
-    return goal_bonus - (time_penalty + energy_penalty + distance_penalty);
+    return goal_bonus + (time_penalty + energy_penalty + distance_penalty);
 }
 
-void print_chromosome(Chromosome *chr) {
-    printf("Sensor weights: ");
-    for(int i = 0; i < 5; i++) {
-        printf("%.2f ", chr->sensor_weights[i]);
-    }
-    printf("\nThresholds: %.1f %.1f %.1f\n", 
-           chr->distance_thresholds[0], 
-           chr->distance_thresholds[1], 
-           chr->distance_thresholds[2]);
-}
+// void print_chromosome(Chromosome *chr) {
+//     printf("Sensor weights: ");
+//     for(int i = 0; i < 5; i++) {
+//         printf("%.2f ", chr->sensor_weights[i]);
+//     }
+//     printf("\nThresholds: %.1f %.1f %.1f\n", 
+//            chr->distance_thresholds[0], 
+//            chr->distance_thresholds[1], 
+//            chr->distance_thresholds[2]);
+// }
 

@@ -2,16 +2,10 @@
 #define CHROMOSOME_H
 
 #include "types.h"
+
 extern int goal_x, goal_y;
 
-typedef enum {
-    FORWARD,
-    TURN_LEFT_45,   
-    TURN_RIGHT_45,
-    BACKWARD
-} Action;
-
-typedef struct {
+typedef struct Chromosome{
     float sensor_weights[5];
     float distance_thresholds[3]; // t1-t3: nära, mellan, långt
 

@@ -2,12 +2,13 @@
 #define ROBOT_H
 
 #include "types.h"
+#include "chromosome.h"
 #include <math.h>
 #include "configuration.h"
 #include <stdbool.h>
 
 
-typedef struct {
+typedef struct Robot{
     float x, y;
     float width, height;
     float angle;
@@ -24,7 +25,7 @@ extern Sensor sensors[5];
 
 
 
-typedef struct {
+typedef struct Individual{
     Robot robot;
     Chromosome chromosome; 
     int active;
@@ -33,6 +34,7 @@ typedef struct {
     int generation;
     int is_best;
     int id;
+    int collision_count;
 } Individual;
 
 // Sensorarray 
@@ -44,7 +46,7 @@ Sensor sensors[5] = {
     {0, 0, M_PI/4, 30}         // Fram-höger (IR)
 };
 
-bool execute_action(Robot *robot, Action action, int **maze);
+bool execute_action(Individual *individual, Action action, int **maze);
 bool reached_goal(Robot *robot);
 bool check_collision(Robot *robot, float x, float y, float angle, int **maze);
 float simulate_ultrasonic(Robot *robot, int sensor_id, int **maze, int width, int height);
