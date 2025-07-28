@@ -9,7 +9,9 @@
 #include "../include/rotation.h"
 #include "../include/logger.h"
 #define POP_SIZE 50
-const int p = 50;
+#define MAX_STEPS 1000;
+//#define ACTIVE_COUNT
+//const int p = 50;
 
 // Sensorarray
 Sensor sensors[5] = {
@@ -31,7 +33,7 @@ int goal_y;
 // Simulerar och loggar en population
 void simulate_population_batch(Individual population[POP_SIZE], int **maze, int width, int height, int generation, int *id_counter) {
     srand(time(NULL));
-    int active_count = 5;
+    int active_count = 5;// hur många som är aktiva i populationen åtgången?
     int max_steps = 1000;
 
     // Initiera varje individ
@@ -44,6 +46,7 @@ void simulate_population_batch(Individual population[POP_SIZE], int **maze, int 
         population[i].id = (*id_counter)++;
         population[i].generation = generation;
         population[i].is_best = 0;
+        population[i].collision_count = 0; 
     }
 
     // Simulera individer
@@ -114,7 +117,7 @@ int main() {
         Individual population[POP_SIZE];
 
         // Initiera population
-        for (int i = 0; i < p; i++) {
+        for (int i = 0; i < POP_SIZE; i++) {
             if (generation == 0 && i == 0 && use_elite) {
                 population[i] = elite;
                 population[i].id = id_counter++;

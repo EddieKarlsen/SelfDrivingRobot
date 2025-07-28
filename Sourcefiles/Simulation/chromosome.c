@@ -158,57 +158,76 @@ void elite_selection(Individual old_pop[POP_SIZE], Individual new_pop[POP_SIZE],
 }
 
 Action decide_action(Individual *individual, int **maze) {
-    Robot *robot = &individual->robot;
     Chromosome *chr = &individual->chromosome;
-    
-    // Läs av alla sensorer
     float sensor_readings[5];
-    for(int i = 0; i < 5; i++) {
-        sensor_readings[i] = simulate_ultrasonic(robot, i, maze, 50, 50); // Anpassa storlek
+
+    // 1. Läs av alla 5 sensorer
+    for (int i = 0; i < 5; i++) {
+        sensor_readings[i] = simulate_ultrasonic(individual, i, maze, 50, 50);
     }
-    
-    // Beräkna viktade poäng för varje möjlig aktion
-    float action_scores[5] = {0}; // FORWARD, TURN_LEFT_45, TURN_RIGHT_45, BACKWARD
-    
-    // Framåt: Prioritera om vägen framåt är fri
-    if(sensor_readings[0] > chr->distance_thresholds[1]) { // Fram sensor
+
+    // 2. Initiera action scores
+    float action_scores[4] = {0}; // 0: FORWARD, 1: LEFT, 2: RIGHT, 3: BACKWARD
+
+    // 3. Grundläggande poäng utifrån direkta sensorer
+    if (sensor_readings[0] > chr->distance_thresholds[1])
         action_scores[0] = chr->action_priorities[0] * chr->sensor_weights[0];
-    }
-    
-    // Vänstersvärg: Bra om vänster sida är fri
-    if(sensor_readings[1] > chr->distance_thresholds[0]) { // Vänster sensor
+
+    if (sensor_readings[1] > chr->distance_thresholds[0])
         action_scores[1] = chr->action_priorities[1] * chr->sensor_weights[1];
-    }
-    
-    // Högersvärg: Bra om höger sida är fri  
-    if(sensor_readings[2] > chr->distance_thresholds[0]) { // Höger sensor
+
+    if (sensor_readings[2] > chr->distance_thresholds[0])
         action_scores[2] = chr->action_priorities[2] * chr->sensor_weights[2];
+
+    action_scores[3] = chr->action_priorities[3] * 0.3f; // Backning är lågprio men möjlig
+
+    // 4. Bonuspoäng från diagonala sensorer (fram-vänster & fram-höger)
+    if (sensor_readings[3] > chr->distance_thresholds[0]) {
+        action_scores[1] += 0.5f * chr->sensor_weights[3]; // öka vänstersväng
     }
-    
-    // Kollisionsundvikande: Minska poäng om sensorer detekterar nära hinder
-    for(int i = 0; i < 5; i++) {
-        if(sensor_readings[i] < chr->distance_thresholds[0]) {
-            // Kraftigt straff för framåt om hinder framför
-            if(i == 0) action_scores[0] *= 0.1;
-            // Straff för svängar om hinder på sidorna
-            if(i == 1) action_scores[1] *= 0.5;
-            if(i == 2) action_scores[2] *= 0.5;
+
+    if (sensor_readings[4] > chr->distance_thresholds[0]) {
+        action_scores[2] += 0.5f * chr->sensor_weights[4]; // öka högersväng
+    }
+
+    // 5. Kollisionsundvikande – straffa om något är nära
+    for (int i = 0; i < 5; i++) {
+        if (sensor_readings[i] < chr->distance_thresholds[0]) {
+            float penalty = chr->collision_avoidance;
+
+            if (i == 0) action_scores[0] /= penalty;
+            if (i == 1 || i == 3) action_scores[1] /= penalty;
+            if (i == 2 || i == 4) action_scores[2] /= penalty;
         }
     }
-    
-    // Hitta bästa aktion
+
+    // 6. Aggressivitet påverkar svängpoäng
+    action_scores[1] *= chr->turn_aggressiveness;
+    action_scores[2] *= chr->turn_aggressiveness;
+
+    // 7. Fallback: Om alla poäng ≈ 0, välj backa
+    bool all_zero = true;
+    for (int i = 0; i < 4; i++) {
+        if (action_scores[i] > 0.01f) {
+            all_zero = false;
+            break;
+        }
+    }
+    if (all_zero) return BACKWARD;
+
+    // 8. Välj bästa aktion
     int best_action = 0;
     float best_score = action_scores[0];
-    
-    for(int i = 1; i < 4; i++) {
-        if(action_scores[i] > best_score) {
+    for (int i = 1; i < 4; i++) {
+        if (action_scores[i] > best_score) {
             best_score = action_scores[i];
             best_action = i;
         }
     }
-    
+
     return (Action)best_action;
 }
+
 
 float calculate_fitness(Individual *individual, int steps_taken) {
     Robot *robot = &individual->robot;
@@ -224,8 +243,9 @@ float calculate_fitness(Individual *individual, int steps_taken) {
     float distance_penalty = gamma * distance_to_goal;
     
     // collison penalty
-    float number_of_collisons = delta;
     
+    float number_of_collisons = individual->collision_count;
+    float collison_penalty = delta * number_of_collisons;
     
     // Bonus om målet nås
     float goal_bonus = 0;
@@ -234,7 +254,9 @@ float calculate_fitness(Individual *individual, int steps_taken) {
     }
     
     // Högre fitness = bättre (negativ kostnad)
-    return goal_bonus + (time_penalty + energy_penalty + distance_penalty);
+    float fitness = goal_bonus - (time_penalty + energy_penalty + distance_penalty + collison_penalty);
+    if (fitness < 0) fitness = 0;
+    return fitness;
 }
 
 // void print_chromosome(Chromosome *chr) {

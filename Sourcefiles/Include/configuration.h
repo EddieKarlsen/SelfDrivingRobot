@@ -1,8 +1,9 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
+//aproximativt värde för pi skilljer sig från det riktiga värdet 0.0000000000000000000841 %
 #ifndef M_PI
-#define M_PI 3.14159265358979323846
+#define M_PI 3.14159265358979323846 
 #endif
 
 //GA configuration

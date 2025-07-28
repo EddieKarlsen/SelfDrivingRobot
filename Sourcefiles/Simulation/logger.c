@@ -10,12 +10,12 @@ void log_robot_to_file(Individual *ind, const char *filename) {
     if (!f) return;
 
     fprintf(f, "%d,%d,%.2f,%d,%d,%d,", 
-        ind->id, 
-        ind->generation,
-        ind->fitness, 
-        ind->steps_taken, 
-        reached_goal(&ind->robot) ? 1 : 0,
-        ind->is_best
+        Individual->id, 
+        Individual->generation,
+        Individual->fitness, 
+        Individual->steps_taken, 
+        reached_goal(&Individual->robot) ? 1 : 0,
+        Individual->is_best
     );
 
     for (int i = 0; i < 5; i++) fprintf(f, "%.2f,", ind->chromosome.sensor_weights[i]);
@@ -58,14 +58,14 @@ int load_best_individual_from_file(Individual *ind, const char *filename) {
     while (fgets(line, sizeof(line), f)) {
         Individual temp;
         Chromosome *chr = &temp.chromosome;
-        int reached, is_best;
+        int reached_goal, is_best;
 
         sscanf(line, "%d,%d,%f,%d,%d,%d,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n",
                &temp.id,
                &temp.generation,
                &temp.fitness,
                &temp.steps_taken,
-               &reached,
+               &reached_goal,
                &is_best,
                &chr->sensor_weights[0],
                &chr->sensor_weights[1],
@@ -83,12 +83,11 @@ int load_best_individual_from_file(Individual *ind, const char *filename) {
                &chr->collision_avoidance);
 
         if (temp.fitness > best_fitness) {
-            best = temp;
+            is_best = temp;
             best_fitness = temp.fitness;
         }
     }
 
     fclose(f);
-    *ind = best;
     return 1;
 }

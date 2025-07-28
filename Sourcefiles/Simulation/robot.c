@@ -2,10 +2,10 @@
 #include "../include/configuration.h"
 #include "../include/robot.h"
 
-float simulate_ultrasonic(Robot *robot, int sensor_id, int **maze, int width, int height) {
-    float start_x = robot->x;
-    float start_y = robot->y;
-    float angle = robot->angle + sensors[sensor_id].angle;
+float simulate_ultrasonic(Individual *individual, int sensor_id, int **maze, int width, int height){
+    float start_x = individual->robot.x;
+    float start_y = individual->robot.y;
+    float angle = individual->robot.angle + sensors[sensor_id].angle;
     
     // Stega längs strålen tills vi träffar en vägg
     for(float dist = 0; dist < sensors[sensor_id].range; dist += 0.1) {
@@ -17,6 +17,7 @@ float simulate_ultrasonic(Robot *robot, int sensor_id, int **maze, int width, in
         }
         
         if(maze[check_y][check_x] == 1) {
+            individual->collision_count++; 
             return dist; // Träffade vägg
         }
     }

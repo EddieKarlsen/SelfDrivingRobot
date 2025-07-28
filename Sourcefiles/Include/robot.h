@@ -35,6 +35,7 @@ typedef struct Individual{
     int is_best;
     int id;
     int collision_count;
+    bool reached_goal;
 } Individual;
 
 // Sensorarray 
@@ -49,7 +50,7 @@ Sensor sensors[5] = {
 bool execute_action(Individual *individual, Action action, int **maze);
 bool reached_goal(Robot *robot);
 bool check_collision(Robot *robot, float x, float y, float angle, int **maze);
-float simulate_ultrasonic(Robot *robot, int sensor_id, int **maze, int width, int height);
+float simulate_ultrasonic(Individual *individual, int sensor_id, int **maze, int width, int height);
 
 void initialize_robot(Robot *robot, float start_x, float start_y);
 void update_orientation(Robot *robot);

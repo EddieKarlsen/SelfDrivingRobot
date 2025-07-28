@@ -14,3 +14,10 @@ file(GLOB SOURCES
 
 # Skapa exekverbar fil
 add_executable(SelfDrivingRobot ${SOURCES})
+
+
+add_custom_target(run
+    COMMAND SelfDrivingRobot
+    DEPENDS SelfDrivingRobot
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+)
