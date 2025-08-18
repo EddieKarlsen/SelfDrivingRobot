@@ -48,7 +48,6 @@ the program uses a Genetic Algorithm to solve maze by:
    these chosen individuals are used as perants for the other individuals in the next generation following whats called crossover and mutation.
 4. Repeating the process over multiple generations until the maximum generations has been meet
 
-
 .
 ├── .vscode/
 ├── analysis/
