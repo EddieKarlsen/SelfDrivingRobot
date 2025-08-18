@@ -34,7 +34,7 @@ class RobotHeatmapGenerator:
         )
         
         # Maze färger
-        maze_colors = ['#000000', '#808080', '#FFFFFF', '#0000FF', '#FF0000']  # svart, grå, vit, blå, röd
+        maze_colors = ['#000000', '#808080', '#FFFFFF', '#0000FF', '#FF0000']
         self.maze_cmap = ListedColormap(maze_colors)
 
     def load_data(self):
@@ -119,7 +119,7 @@ class RobotHeatmapGenerator:
         print(f"Extraherade {len(movements)} rörelser")
         return movements, maze_info
 
-    def create_improved_heatmap(self, movements, maze_info, title="Robot Movement Heatmap", 
+    def create_heatmap(self, movements, maze_info, title="Robot Movement Heatmap", 
                                output_file="improved_heatmap.png"):
         """Skapa förbättrad heatmap som matchar referensbilden"""
         if not movements or not maze_info:
@@ -179,7 +179,7 @@ class RobotHeatmapGenerator:
         
         plt.tight_layout()
         plt.savefig(output_file, dpi=300, bbox_inches='tight', facecolor='white')
-        print(f"💾 Förbättrad heatmap sparad som {output_file}")
+        print(f"heatmap sparad som {output_file}")
         return True
 
     def create_clean_heatmap(self, ax, heatmap, maze_array, title, maze_info=None):
@@ -281,7 +281,7 @@ class RobotHeatmapGenerator:
         
         # Skapa statistiktext
         stats = [
-            "📊 STATISTIK",
+            "STATISTIK",
             "",
             f"Generationer: {min(generations)} - {max(generations)}",
             f"Antal individer: {len(individuals)}",
@@ -338,7 +338,7 @@ class RobotHeatmapGenerator:
             if hmap.max() > 0:
                 hmap /= hmap.max()
         
-        # Skapa figure
+        # Skapa figurer
         fig, axes = plt.subplots(1, 3, figsize=(18, 6))
         fig.suptitle('Rörelseanalys Jämförelse', fontsize=16, fontweight='bold')
         
@@ -350,7 +350,7 @@ class RobotHeatmapGenerator:
         
         plt.tight_layout()
         plt.savefig(output_file, dpi=300, bbox_inches='tight', facecolor='white')
-        print(f"🔍 Jämförelse heatmaps sparad som {output_file}")
+        print(f"Jämförelse heatmaps sparad som {output_file}")
         return True
 
     def create_generation_evolution(self, movements, maze_info, output_file="generation_evolution.png"):
@@ -393,7 +393,6 @@ class RobotHeatmapGenerator:
             self.create_clean_heatmap(axes_flat[i], gen_heatmap, maze_array, 
                                     f"Generation {gen}", maze_info)
         
-        # Dölj tomma subplots
         for i in range(len(selected_gens), 4):
             axes_flat[i].set_visible(False)
         
@@ -404,8 +403,7 @@ class RobotHeatmapGenerator:
 
     def create_heatmap(self, movements, maze_info, title="Robot Movement Heatmap", 
                       output_file="heatmap.png", bins=50):
-        """Förbättrad huvudfunktion för heatmap-skapande"""
-        return self.create_improved_heatmap(movements, maze_info, title, output_file)
+        return self.create_heatmap(movements, maze_info, title, output_file)
 
     def create_path_analysis(self, output_file="path_analysis.png"):
         """Skapa detaljerad analys av ruttval"""
@@ -481,7 +479,7 @@ class RobotHeatmapGenerator:
 
         plt.tight_layout()
         plt.savefig(output_file, dpi=300, bbox_inches='tight')
-        print(f"🛤️ Ruttanalys sparad som {output_file}")
+        print(f"Ruttanalys sparad som {output_file}")
         return True
 
     def get_movement_stats_text(self, movements):

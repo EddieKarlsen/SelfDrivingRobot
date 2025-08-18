@@ -5,7 +5,9 @@ CMakeCache.txt
 CMakeFiles/
 Makefile
 compile_commands.json
-
+maze_log.txt
+robot_log.json
+.png
 sdkconfig
 sdkconfig.old
 .rom/
