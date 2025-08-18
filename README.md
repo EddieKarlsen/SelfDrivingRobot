@@ -1,25 +1,49 @@
 # Maze Solver using Genetic Algorithm
 
-This project is an attempt to create a **Genetic Algorithm** to solve mazes.
+This project is an attempt to create a **Genetic Algorithm** to solve mazes. The program evolves a population of solutions to find the most efficient path through a maze.
 
-##license
+## Table of Contents
+- [License](#license)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+- [How It Works](#how-it-works)
+- [Contributing](#contributing)
+- [Resources](#resources)
+
+## License
+This project is licensed under the MIT License and provided "as is" whithout garanties
 
 ## Requirements
-
 To run this program, you will need:
 
-- Python installed (version 3.8 or higher recommended)
-- A compiler if you plan to use compiled components
+- Python 3.8 or higher
+- A C++ compiler if you plan to build compiled components
+- CMake (for building the project)
 
 ## Installation
-
 1. Clone this repository:
-   ```bash
-   git clone <repository-url>
+```bash
+git clone <repository-url>
+```
 
-```bash cmake --build build
+## Usaage
+In order to run this program:
+1. Configure the settings in Configuration.h
+Note: Setting POP_SIZE too high can crash the program (tested up to 50).
+2. Build the programm
+``` bash
+cmake --build build
+```
+3. Run the program
+``` bash
+.\build\SelfDrivingRobot.exe
+```
 
-```bash .\build\SelfDrivingRobot.exe
-## Usage
-i
-
+## How it works 
+the program uses a Genetic Algorithm to solve maze by:
+1. Initalizeing a population of solutions that has their uniqe attributes called chromosomes
+2. Evaluatint their performance in the mazes note that a new maze is created after 25 generations this step i ussaly refered to ass a fitness critera
+3. selecting the best candidates to next generation in this programm im using elitism selection other popular selction methods are tournament and ... and
+   these chosen individuals are used as perants for the other individuals in the next generation following whats called crossover and mutation.
+4. Repeating the process over multiple generations until the maximum generations has been meet 
