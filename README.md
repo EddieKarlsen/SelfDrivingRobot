@@ -8,8 +8,6 @@ This project is an attempt to create a **Genetic Algorithm** to solve mazes. The
 - [Installation](#installation)
 - [Usage](#usage)
 - [How It Works](#how-it-works)
-- [Contributing](#contributing)
-- [Resources](#resources)
 
 ## License
 This project is licensed under the MIT License and provided "as is" whithout garanties
