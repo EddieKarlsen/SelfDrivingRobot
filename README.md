@@ -46,4 +46,42 @@ the program uses a Genetic Algorithm to solve maze by:
 2. Evaluatint their performance in the mazes note that a new maze is created after 25 generations this step i ussaly refered to ass a fitness critera
 3. selecting the best candidates to next generation in this programm im using elitism selection other popular selction methods are tournament and ... and
    these chosen individuals are used as perants for the other individuals in the next generation following whats called crossover and mutation.
-4. Repeating the process over multiple generations until the maximum generations has been meet 
+4. Repeating the process over multiple generations until the maximum generations has been meet
+
+.
+├── .vscode/               
+├── analysis/              
+│   ├── heatmap_generator.py 
+├── build/                
+├── data/                 
+│   ├── visualizations/    
+│   │   └── heatmaps/      
+├── Sourcefiles/          
+│   ├── Include/           
+│   │   ├── chromosome.h
+│   │   ├── configuration.h
+│   │   ├── debugger.h
+│   │   ├── logger.h
+│   │   ├── maze.h
+│   │   ├── menus.h
+│   │   ├── pythonChecker.h
+│   │   ├── robot.h
+│   │   ├── rotation.h
+│   │   ├── sims.h
+│   │   ├── tracking.h
+│   │   └── types.h
+│   └── Simulation/        
+│       ├── chromosome.c
+│       ├── debugger.c
+│       ├── logger.c
+│       ├── main.c         
+│       ├── maze.c
+│       ├── menus.c
+│       ├── pythonChecker.c
+│       ├── robot.c
+│       ├── rotation.c
+│       ├── sims.c
+│       └── tracking.c
+├── .gitignore             
+├── CMakeLists.txt        
+└── README.md             
