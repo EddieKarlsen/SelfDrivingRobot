@@ -47,17 +47,16 @@ the program uses a Genetic Algorithm to solve maze by:
 3. selecting the best candidates to next generation in this programm im using elitism selection other popular selction methods are tournament and ... and
    these chosen individuals are used as perants for the other individuals in the next generation following whats called crossover and mutation.
 4. Repeating the process over multiple generations until the maximum generations has been meet
-
 .
-├── .vscode/               
-├── analysis/              
-│   ├── heatmap_generator.py 
-├── build/                
-├── data/                 
-│   ├── visualizations/    
-│   │   └── heatmaps/      
-├── Sourcefiles/          
-│   ├── Include/           
+├── .vscode/
+├── analysis/
+│   └── heatmap_generator.py
+├── build/
+├── data/
+│   └── visualizations/
+│       └── heatmaps/
+├── Sourcefiles/
+│   ├── Include/
 │   │   ├── chromosome.h
 │   │   ├── configuration.h
 │   │   ├── debugger.h
@@ -70,11 +69,11 @@ the program uses a Genetic Algorithm to solve maze by:
 │   │   ├── sims.h
 │   │   ├── tracking.h
 │   │   └── types.h
-│   └── Simulation/        
+│   └── Simulation/
 │       ├── chromosome.c
 │       ├── debugger.c
 │       ├── logger.c
-│       ├── main.c         
+│       ├── main.c
 │       ├── maze.c
 │       ├── menus.c
 │       ├── pythonChecker.c
@@ -82,6 +81,6 @@ the program uses a Genetic Algorithm to solve maze by:
 │       ├── rotation.c
 │       ├── sims.c
 │       └── tracking.c
-├── .gitignore             
-├── CMakeLists.txt        
-└── README.md             
+├── .gitignore
+├── CMakeLists.txt
+└── README.md
