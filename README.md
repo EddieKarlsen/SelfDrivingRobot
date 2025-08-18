@@ -17,10 +17,10 @@ This project is licensed under the MIT License and provided "as is" whithout gar
 ## Requirements
 To run this program, you will need:
 
-- Python 3.8 or higher
+- **Python 3.8** or higher
 - **Python-bibliotek:** `numpy`, `matplotlib`
-- A C++ compiler if you plan to build compiled components
-- CMake (for building the project)
+- **A C++ compiler** if you plan to build compiled components
+- **CMake** (for building the project)
 ## Installation
 1. Clone this repository:
 ```bash
