@@ -55,6 +55,7 @@ the program uses a Genetic Algorithm to solve maze by:
 ├── data/
 │   └── visualizations/
 │       └── heatmaps/
+│           └── basic_heatmap.png  # Exempel
 ├── Sourcefiles/
 │   ├── Include/
 │   │   ├── chromosome.h
