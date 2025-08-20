@@ -69,7 +69,7 @@ void mainmenu()
         printf("2. Analysis submenu\n");
         printf("3. Load maze (TBD)\n");
         printf("4. Quit program\n");
-        printf("Enter your choice (1-4): ");
+        printf("Enter your choice (1-4):");
         
         if (checkInput(choice_buffer, sizeof(choice_buffer), &choice) != 0) {
         continue;
@@ -116,50 +116,12 @@ void mainmenu()
     }
 }
 
-void analysis_submenu(){
-    char choice_buffer[100];
-    int choice;
-    while (true)
-    {
-        printf("\n=== Analysis options ===");
-        printf("\n1. Heatmaps");
-        printf("\n2. Return to mainmenu\n");
-
-        if (!fgets(choice_buffer, sizeof(choice_buffer), stdin)) {
-            printf("Error reading input. Please try again.\n");
-            continue;
-        }
-        
-        char *endptr;
-        choice = strtol(choice_buffer, &endptr, 10);
-        
-        while (*endptr == ' ' || *endptr == '\t' || *endptr == '\n') {
-            endptr++;
-        }
-        if (endptr == choice_buffer || *endptr != '\0' || choice < 1 || choice > 6) {
-            printf("Invalid choice! Enter a number between 1-6.\n");
-            continue;
-        }
-
-        switch (choice)
-        {
-        case 1:
-            show_heatmap_menu();
-            break;
-        case 2:
-            return;
-        default:
-            break;
-        }
-    }
-}
-
-void show_heatmap_menu() {
+void analysis_submenu() {
     char choice_buffer[100];
     int choice;
     
     while(true) {
-        printf("\n=== HEATMAP & VISUALIZATION ===\n");
+        printf("\n=== HEATMAPS & VISUALIZATION ===\n");
         printf("1. Basic Heatmap (all movements)\n");
         printf("2. Heatmap for specific generation\n");
         printf("3. Heatmap for best individuals\n");
@@ -185,7 +147,8 @@ void show_heatmap_menu() {
             continue;
         }
         
-        switch (choice) {
+        switch (choice) 
+        {
             case 1: {
                 printf("\nCreating basic heatmap...\n");
                 
@@ -211,7 +174,8 @@ void show_heatmap_menu() {
             case 2: {
                 printf("Enter generation to analyze: ");
                 char gen_buffer[50];
-                if (fgets(gen_buffer, sizeof(gen_buffer), stdin)) {
+                if (fgets(gen_buffer, sizeof(gen_buffer), stdin)) 
+                {
                     int generation = atoi(gen_buffer);
                     if (generation >= 0) {
                         char command[512];
@@ -231,6 +195,8 @@ void show_heatmap_menu() {
                         printf("Invalid generation number!\n");
                     }
                 }
+
+
                 break;
             }
             
@@ -269,20 +235,42 @@ void show_heatmap_menu() {
             }
             
             case 5: {
-                printf("\nCreating animated evolution...\n");
-                printf("This may take a while for large datasets...\n");
-                system("if not exist \"data\\visualizations\\animations\" mkdir \"data\\visualizations\\animations\"");
+                printf("\n which generation?");
+                if (!fgets(choice_buffer, sizeof(choice_buffer), stdin)) {
+                    printf("Error reading input. Please try again.\n");
+                    continue;
+                }
                 
+                char *endptr;
+                int desired_generation = strtol(choice_buffer, &endptr, 10);
+                
+            
+                while (*endptr == ' ' || *endptr == '\t' || *endptr == '\n') {
+                    endptr++;
+                }
+                if (endptr == choice_buffer || *endptr != '\0' || desired_generation < 0 || desired_generation > NUM_GENERATIONS) {
+                    printf("Invalid choice! Enter a number between 0- %d.\n" NUM_GENERATIONS);
+                    continue;
+                }
+
+                int generation =(desired_generation /  PHASES_PER_GENERATION);
+                int start = generation * PHASES_PER_GENERATION;
+                int end = start + PHASES_PER_GENERATION -1;
+
                 char command[512];
                 snprintf(command, sizeof(command),
-                    "cd analysis && python heatmap_generator.py --input ..\\robot_log.json --animation --output ..\\data\\visualizations\\animations\\evolution.gif");
-                
+                    "cd analysis && python heatmap_generator.py --start %d --end %d --input ..\\robot_log.json --maze ..\\maze_log.txt --output ..\\data\\visualizations\\heatmaps\\multigenerational_heatmap.png",
+                    start, end);
                 int result = system(command);
                 if (result == 0) {
-                    printf("Animation created: data\\visualizations\\animations\\evolution.gif\n");
+                    printf("Heatmap created: data\\visualizations\\heatmaps\\multigenerational_heatmap.png\n");
                 } else {
-                    printf("Error creating animation\n");
+                    printf("Error creating heatmap. Check that:\n");
+                    printf("- Python is installed and in PATH\n");
+                    printf("- Required Python packages are installed\n");
+                    printf("- robot_log.json exists and is valid\n");
                 }
+                
                 break;
             }
             

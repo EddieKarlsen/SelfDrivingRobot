@@ -80,7 +80,7 @@ void simulate_population_batch(Simulationcontext *context, Individual *elite, in
 
     int current_training_phase = -1;
     int generations_in_training_phase = 0;
-    const int GENERATIONS_PER_PHASE = 25;
+    const int GENERATIONS_PER_PHASE = PHASES_PER_GENERATION;
 
     for (int generation = start_generation; generation < start_generation + remaining_generations; generation++) {
         

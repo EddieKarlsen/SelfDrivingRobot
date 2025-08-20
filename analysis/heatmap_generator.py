@@ -1,8 +1,4 @@
 #!/usr/bin/env python3
-"""
-Förbättrad Heatmap Generator för Robot Labyrinth Simulation
-Förbättrad version med bättre visualisering som matchar referensbilden
-"""
 
 import json
 import numpy as np
@@ -22,12 +18,10 @@ class RobotHeatmapGenerator:
         self.data = None
         self.maze_data = None
         
-        # Definiera färgscheman som matchar referensbilden
         self.setup_colormaps()
     
     def setup_colormaps(self):
-        """Skapa anpassade färgscheman"""
-        # Heatmap färger (grön-gul-röd)
+        """Skapa färgscheman"""
         self.heatmap_colors = ['#000000', '#FF0000', '#FFFF00', '#00FF00']
         self.heatmap_cmap = LinearSegmentedColormap.from_list(
             'robot_heat', self.heatmap_colors, N=256
@@ -69,16 +63,16 @@ class RobotHeatmapGenerator:
             for char in row_str:
                 if char == '#':      # Vägg
                     row.append(1)
-                elif char == 'B':    # Border/Kant
+                elif char == 'B':    # Kant
                     row.append(1)
-                elif char == 'O':    # Open/Öppen
+                elif char == 'O':    # Öppen
                     row.append(0)
                 elif char == 'S':    # Start
                     row.append(2)
-                elif char == 'G':    # Goal/Mål
+                elif char == 'G':    # Mål
                     row.append(3)
                 else:
-                    row.append(0)    # Default till öppen
+                    row.append('?')    # Default
             maze_array.append(row)
         return np.array(maze_array)
 
@@ -119,7 +113,7 @@ class RobotHeatmapGenerator:
         print(f"Extraherade {len(movements)} rörelser")
         return movements, maze_info
 
-    def create_heatmap(self, movements, maze_info, title="Robot Movement Heatmap", 
+    def create_improved_heatmap(self, movements, maze_info, title="Robot Movement Heatmap", 
                                output_file="improved_heatmap.png"):
         """Skapa förbättrad heatmap som matchar referensbilden"""
         if not movements or not maze_info:
@@ -179,11 +173,11 @@ class RobotHeatmapGenerator:
         
         plt.tight_layout()
         plt.savefig(output_file, dpi=300, bbox_inches='tight', facecolor='white')
-        print(f"heatmap sparad som {output_file}")
+        print(f"Förbättrad heatmap sparad som {output_file}")
         return True
 
     def create_clean_heatmap(self, ax, heatmap, maze_array, title, maze_info=None):
-        """Skapa ren heatmap som matchar referensbilden"""
+        """Skapa ren heatmap"""
         # Skapa composite bild
         display_array = np.zeros_like(maze_array, dtype=float)
         
@@ -279,7 +273,6 @@ class RobotHeatmapGenerator:
         successful_individuals = set(m['individual_id'] for m in movements if m['reached_goal'])
         fitness_values = [m['fitness'] for m in movements]
         
-        # Skapa statistiktext
         stats = [
             "STATISTIK",
             "",
@@ -338,7 +331,7 @@ class RobotHeatmapGenerator:
             if hmap.max() > 0:
                 hmap /= hmap.max()
         
-        # Skapa figurer
+        # Skapa figure
         fig, axes = plt.subplots(1, 3, figsize=(18, 6))
         fig.suptitle('Rörelseanalys Jämförelse', fontsize=16, fontweight='bold')
         
@@ -403,7 +396,8 @@ class RobotHeatmapGenerator:
 
     def create_heatmap(self, movements, maze_info, title="Robot Movement Heatmap", 
                       output_file="heatmap.png", bins=50):
-        return self.create_heatmap(movements, maze_info, title, output_file)
+        """Förbättrad huvudfunktion för heatmap-skapande"""
+        return self.create_improved_heatmap(movements, maze_info, title, output_file)
 
     def create_path_analysis(self, output_file="path_analysis.png"):
         """Skapa detaljerad analys av ruttval"""
@@ -493,7 +487,7 @@ class RobotHeatmapGenerator:
         fitness_values = [m['fitness'] for m in movements]
         
         stats = [
-            "📊 MOVEMENT STATISTIK:",
+            "MOVEMENT STATISTIK:",
             f" Generationer: {min(generations)} - {max(generations)}",
             f" Antal individer: {len(individuals)}",
             f" Lyckade individer: {len(successful_individuals)} ({len(successful_individuals)/len(individuals)*100:.1f}%)",
@@ -501,7 +495,7 @@ class RobotHeatmapGenerator:
             f" Genomsnitt steg/individ: {len(movements)/len(individuals):.1f}",
             f" Fitness range: {min(fitness_values):.1f} - {max(fitness_values):.1f}",
             "",
-            "🎯 FRAMGÅNGSANALYS:",
+            "FRAMGÅNGSANALYS:",
             f" Framgångsgrad: {len(successful_individuals)}/{len(individuals)} individer"
         ]
         

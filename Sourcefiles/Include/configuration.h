@@ -19,6 +19,7 @@
 #define ROBOT_WIDTH 2.0f
 #define ROBOT_HEIGHT 2.0f
 #define MAX_ATTEMPTS 1000
+#define PHASES_PER_GENERATION 25
 
 // Maze configuration över hur loggningen ser ut
 #define WALL '#'         
