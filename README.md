@@ -42,6 +42,13 @@ cmake --build build
 the program uses a Genetic Algorithm to solve maze by:
 1. Initalizeing a population of solutions that has their uniqe attributes called chromosomes
 2. Evaluatint their performance in the mazes note that a new maze is created after 25 generations this step i ussaly refered to ass a fitness critera
-3. selecting the best candidates to next generation in this programm im using elitism selection other popular selction methods are tournament and ... and
+3. selecting the best candidates to next generation in this programm im using elitism selection and
    these chosen individuals are used as perants for the other individuals in the next generation following whats called crossover and mutation.
 4. Repeating the process over multiple generations until the maximum generations has been meet
+
+## Planed improvments
+- change the selection method to an tournament based one as the current Elitism has a high probability for surviorbias
+- increase the readability
+- implent a better method for tracking energy usage
+- make the sensors more rialistic as the current variant dosnt take into account such as noice
+- change the engine logic to a pwm based system 
