@@ -28,9 +28,10 @@ git clone <repository-url>
 
 ## Usage
 In order to run this program:
-1. Configure the settings in Configuration.h
-Note: Setting POP_SIZE too high can crash the program (tested up to 50).
-2. Create a build dir
+1. Configure the settings in Configuration.h the settings to change are POP_SIZE, NUM_GENERATIONS, MAX_STEPS and MUTATION_RATE.
+Note: Setting POP_SIZE too high can crash the program (tested up to 50), NUM_GENERATIONS start counting from zero, MAX_STEPS is the maximum steps a individual can take, the MUTATION_RATE dictates how much the chromosomes changes each generation
+
+3. Create a build dir
 ``` bash
    mkdir build
    cd build
