@@ -16,7 +16,7 @@ This project is licensed under the MIT License and provided "as is" whithout gar
 To run this program, you will need:
 
 - **Python 3.8** or higher
-- **Python-bibliotek:** `numpy`, `matplotlib`
+- **Python-bibliotek:** `numpy`, `matplotlib`, `Seaborn` 
 - **A C++ compiler** if you plan to build compiled components
 - **CMake** (for building the project)
 ## Installation
