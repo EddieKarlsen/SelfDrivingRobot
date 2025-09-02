@@ -8,6 +8,7 @@ This project is an attempt to create a **Genetic Algorithm** to solve mazes. The
 - [Installation](#installation)
 - [Usage](#usage)
 - [How It Works](#how-it-works)
+- [Planned improvements](#Planned-improvements)
 
 ## License
 This project is licensed under the MIT License and provided "as is" whithout garanties
@@ -25,11 +26,16 @@ To run this program, you will need:
 git clone <repository-url>
 ```
 
-## Usaage
+## Usage
 In order to run this program:
 1. Configure the settings in Configuration.h
 Note: Setting POP_SIZE too high can crash the program (tested up to 50).
-2. Build the programm
+2. Create a build dir
+``` bash
+   mkdir build
+   cd build
+```
+4. Build the programm
 ``` bash
 cmake --build build
 ```
@@ -46,9 +52,9 @@ the program uses a Genetic Algorithm to solve maze by:
    these chosen individuals are used as perants for the other individuals in the next generation following whats called crossover and mutation.
 4. Repeating the process over multiple generations until the maximum generations has been meet
 
-## Planed improvments
-- change the selection method to an tournament based one as the current Elitism has a high probability for surviorbias
+## Planned improvements
+- change the selection method to an tournament based one as the current Elitism has a high probability for survivor bias
 - increase the readability
-- implent a better method for tracking energy usage
-- make the sensors more rialistic as the current variant dosnt take into account such as noice
+- implement a better method for tracking energy usage
+- make the sensors more rialistic as the current variant dosnt take into account such as noise
 - change the engine logic to a pwm based system 
