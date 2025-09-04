@@ -19,6 +19,7 @@ To run this program, you will need:
 - **Python 3.8** or higher
 - **Python-bibliotek:** `numpy`, `matplotlib`, `Seaborn` 
 - **A C++ compiler** if you plan to build compiled components
+  like GCC 9.0+ or Clang 10.0+ (any C99-compatible compiler)
 - **CMake** (for building the project)
 ## Installation
 1. Clone this repository:
