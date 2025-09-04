@@ -10,7 +10,7 @@ void rotate_point(float px, float py, float angle, float *rx, float *ry) {
 }
 
 void get_robot_corners(Robot *robot, float corners[4][2]) {
-    // Lokala koordinater för robotens hörn (relativt centrum)
+    // Local cordinates for robots corner (relative to its centrum)
     float local[4][2] = {{-1,-0.5}, {1,-0.5}, {1,0.5}, {-1,0.5}};
     
     for(int i = 0; i < 4; i++) {

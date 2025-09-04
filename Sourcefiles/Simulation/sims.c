@@ -14,7 +14,7 @@
 #include "../include/tracking.h"
 
 
-// === help functions ===
+//help functions
 
 static void setup_next_maze_phase(Simulationcontext *context, int target_phase,
                                   LabyrinthType *training_sequence, const char **phase_names, int num_phases,
@@ -164,7 +164,7 @@ void simulate_population_batch(Simulationcontext *context, Individual *elite, in
     printf("==============================\n");
 }
 
-// === Help functions implementation ===
+//Help functions 
 
 static void read_sensors(Individual *ind, Simulationcontext *ctx, float readings[5]) {
     for (int s = 0; s < 5; s++) {

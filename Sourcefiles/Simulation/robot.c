@@ -8,16 +8,15 @@
 #include "../include/types.h"
 #include "../include/maze.h"
 
-// Konstanter
 #define MOVE_DISTANCE 1.0f
 #define TURN_ANGLE_45 (M_PI / 4.0f)
 #define GOAL_THRESHOLD 2.0f
 
-// Initiera robot med standardvärden
+// Initiate robot whith standardvalues
 void initialize_robot(Robot *robot, float start_x, float start_y) {
     robot->x = start_x;
     robot->y = start_y;
-    robot->angle = 0.0f;        // Pekar åt höger
+    robot->angle = 0.0f;        // points towards the right
     robot->width = 2.0f;
     robot->height = 2.0f;
     robot->orientation = 0;

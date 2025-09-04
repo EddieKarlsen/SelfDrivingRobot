@@ -49,7 +49,7 @@ JsonLogger* init_json_logger(const char *filename) {
 
         logger->file = f;
         logger->first_entry = false;
-        logger->first_generation = false; // Initialize this flag
+        logger->first_generation = false; 
         printf("Appending to existing JSON log: %s\n", filename);
 
     } else {
@@ -68,7 +68,7 @@ JsonLogger* init_json_logger(const char *filename) {
 
         logger->file = f;
         logger->first_entry = true;
-        logger->first_generation = true; // Initialize this flag
+        logger->first_generation = true;
         printf("Created new JSON log: %s\n", filename);
     }
 
@@ -119,7 +119,6 @@ void log_individual_complete(JsonLogger *logger, Individual *ind,
     }
     logger->generation_count++;
     
-    // Calculate distance to goal (you might want to implement this properly)
     float distance_to_goal = 0.0f; // Placeholder
     
     fprintf(logger->file, "        {\n");
@@ -238,40 +237,6 @@ void write_movements(FILE *file, MovementLog *movements, int count) {
         fprintf(file, "\n");
     }
     fprintf(file, "          ]");
-}
-
-// Fix for proper JSON generation function
-int fix_json_file(const char *filename) {
-    printf("Trying to fix JSON structure in %s...\n", filename);
-    
-    FILE *original = fopen(filename, "r");
-    if (!original) {
-        printf("Could not open original file\n");
-        return 0;
-    }
-    
-    char backup_name[256];
-    snprintf(backup_name, sizeof(backup_name), "%s.backup", filename);
-    
-    FILE *backup = fopen(backup_name, "w");
-    if (!backup) {
-        fclose(original);
-        printf("Could not create backup file\n");
-        return 0;
-    }
-    
-    // Copy original to backup
-    char ch;
-    while ((ch = fgetc(original)) != EOF) {
-        fputc(ch, backup);
-    }
-    fclose(backup);
-    fclose(original);
-    
-    printf("Backup created as %s\n", backup_name);
-    printf("You need to manually fix JSON structure or start with a new file\n");
-    
-    return 1;
 }
 
 // Rest of the functions remain the same...

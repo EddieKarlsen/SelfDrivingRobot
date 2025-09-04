@@ -27,7 +27,7 @@ class RobotHeatmapGenerator:
             'robot_heat', self.heatmap_colors, N=256
         )
         
-        # Maze färger
+        # Maze colours
         maze_colors = ['#000000', '#808080', '#FFFFFF', '#0000FF', '#FF0000']
         self.maze_cmap = ListedColormap(maze_colors)
 
@@ -61,15 +61,15 @@ class RobotHeatmapGenerator:
         for row_str in grid_strings:
             row = []
             for char in row_str:
-                if char == '#':      # Vägg
+                if char == '#':      # Wall
                     row.append(1)
-                elif char == 'B':    # Kant
+                elif char == 'B':    # corner
                     row.append(1)
-                elif char == 'O':    # Öppen
+                elif char == 'O':    # open
                     row.append(0)
                 elif char == 'S':    # Start
                     row.append(2)
-                elif char == 'G':    # Mål
+                elif char == 'G':    # goal
                     row.append(3)
                 else:
                     row.append('?')    # Default
@@ -120,33 +120,33 @@ class RobotHeatmapGenerator:
             print("Ingen rörelsedata eller maze-info att visualisera")
             return False
 
-        # Skapa maze array
+        # creates the maze array
         maze_array = self.parse_maze_grid(maze_info['layout'])
         rows, cols = maze_array.shape
         
-        # Skapa heatmap grid baserat på rörelsedata
+        # create heatmap grid based on movement data
         heatmap = np.zeros((rows, cols), dtype=float)
         
-        # Fyll heatmap med besöksfrekvens
+        # fill heatmaps whith visitationfrequency 
         for move in movements:
-            # Konvertera till grid-koordinater
+            # convert to grid-cordinates
             grid_x = int(np.clip(round(move['x']), 0, cols-1))
             grid_y = int(np.clip(round(move['y']), 0, rows-1))
             heatmap[grid_y, grid_x] += 1
         
-        # Normalisera heatmap
+        # Normalalise heatmap
         if heatmap.max() > 0:
             heatmap = heatmap / heatmap.max()
         
-        # Skapa figure med flera subplots
+        
         fig, axes = plt.subplots(2, 2, figsize=(16, 12))
         fig.suptitle(title, fontsize=16, fontweight='bold')
         
-        # 1. Ren heatmap (som referensbilden)
+       
         ax1 = axes[0, 0]
         self.create_clean_heatmap(ax1, heatmap, maze_array, "Alla Rörelser", maze_info)
         
-        # 2. Endast lyckade individer
+        
         ax2 = axes[0, 1] 
         successful_movements = [m for m in movements if m['reached_goal']]
         success_heatmap = np.zeros((rows, cols), dtype=float)
@@ -163,11 +163,11 @@ class RobotHeatmapGenerator:
                                 f"Lyckade Rutter ({len(set(m['individual_id'] for m in successful_movements))} individer)",
                                 maze_info)
         
-        # 3. Generationsanalys
+        
         ax3 = axes[1, 0]
         self.create_generation_analysis(ax3, movements, maze_array)
         
-        # 4. Statistik
+        
         ax4 = axes[1, 1]
         self.create_stats_visualization(ax4, movements)
         
@@ -178,22 +178,22 @@ class RobotHeatmapGenerator:
 
     def create_clean_heatmap(self, ax, heatmap, maze_array, title, maze_info=None):
         """Skapa ren heatmap"""
-        # Skapa composite bild
+        
         display_array = np.zeros_like(maze_array, dtype=float)
         
-        # Sätt väggar till -1 för svart färg
+        
         wall_mask = (maze_array == 1)
         display_array[wall_mask] = -1
         
-        # Sätt heatmap värden för öppna områden
+        
         open_mask = (maze_array == 0) | (maze_array == 2) | (maze_array == 3)
         display_array[open_mask] = heatmap[open_mask]
         
-        # Visa med anpassad colormap
+        
         im = ax.imshow(display_array, cmap=self.heatmap_cmap, 
                       vmin=-1, vmax=1, interpolation='nearest', aspect='equal')
         
-        # Hitta start och mål från maze_array om maze_info inte finns
+        
         if maze_info:
             start_pos = maze_info.get('start', None)
             goal_pos = maze_info.get('goal', None)
@@ -201,7 +201,7 @@ class RobotHeatmapGenerator:
             start_pos = None
             goal_pos = None
         
-        # Hitta start och mål från grid om inte i maze_info
+        
         if start_pos is None or goal_pos is None:
             start_positions = np.where(maze_array == 2)
             goal_positions = np.where(maze_array == 3)
@@ -211,7 +211,7 @@ class RobotHeatmapGenerator:
             if len(goal_positions[0]) > 0:
                 goal_pos = [goal_positions[1][0], goal_positions[0][0]]  # [x, y]
         
-        # Markera start och mål om de hittades
+        
         if start_pos:
             ax.text(start_pos[0], start_pos[1], 'Start', ha='center', va='center', 
                    color='white', fontweight='bold', fontsize=8,
@@ -225,7 +225,7 @@ class RobotHeatmapGenerator:
         ax.set_xticks([])
         ax.set_yticks([])
         
-        # Lägg till colorbar
+        
         cbar = plt.colorbar(im, ax=ax, shrink=0.8)
         cbar.set_label('Besöksfrekvens', rotation=270, labelpad=15)
         
@@ -236,7 +236,6 @@ class RobotHeatmapGenerator:
         generations = sorted(set(m['generation'] for m in movements))
         
         if len(generations) > 1:
-            # Skapa heatmap för senaste generation
             latest_gen = max(generations)
             latest_movements = [m for m in movements if m['generation'] == latest_gen]
             
@@ -267,7 +266,6 @@ class RobotHeatmapGenerator:
                    transform=ax.transAxes)
             return
         
-        # Beräkna statistik
         generations = set(m['generation'] for m in movements)
         individuals = set(m['individual_id'] for m in movements)
         successful_individuals = set(m['individual_id'] for m in movements if m['reached_goal'])
@@ -302,7 +300,6 @@ class RobotHeatmapGenerator:
         maze_array = self.parse_maze_grid(maze_info['layout'])
         rows, cols = maze_array.shape
         
-        # Skapa olika heatmaps
         all_heatmap = np.zeros((rows, cols), dtype=float)
         success_heatmap = np.zeros((rows, cols), dtype=float)
         fail_heatmap = np.zeros((rows, cols), dtype=float)
@@ -310,7 +307,6 @@ class RobotHeatmapGenerator:
         successful_movements = [m for m in movements if m['reached_goal']]
         failed_movements = [m for m in movements if not m['reached_goal']]
         
-        # Fyll heatmaps
         for move in movements:
             grid_x = int(np.clip(round(move['x']), 0, cols-1))
             grid_y = int(np.clip(round(move['y']), 0, rows-1))
@@ -326,12 +322,10 @@ class RobotHeatmapGenerator:
             grid_y = int(np.clip(round(move['y']), 0, rows-1))
             fail_heatmap[grid_y, grid_x] += 1
         
-        # Normalisera
         for hmap in [all_heatmap, success_heatmap, fail_heatmap]:
             if hmap.max() > 0:
                 hmap /= hmap.max()
-        
-        # Skapa figure
+ 
         fig, axes = plt.subplots(1, 3, figsize=(18, 6))
         fig.suptitle('Rörelseanalys Jämförelse', fontsize=16, fontweight='bold')
         
@@ -358,8 +352,7 @@ class RobotHeatmapGenerator:
         
         maze_array = self.parse_maze_grid(maze_info['layout'])
         rows, cols = maze_array.shape
-        
-        # Välj 4 jämnt fördelade generationer
+
         step = max(1, len(generations) // 4)
         selected_gens = generations[::step][:4]
         
@@ -409,7 +402,6 @@ class RobotHeatmapGenerator:
         fig, axes = plt.subplots(2, 2, figsize=(16, 12))
         fig.suptitle('Detaljerad Ruttanalys', fontsize=16, fontweight='bold')
 
-        # Gruppera rörelser per individ
         individual_paths = {}
         for move in movements:
             ind_id = move['individual_id']
@@ -417,13 +409,11 @@ class RobotHeatmapGenerator:
                 individual_paths[ind_id] = []
             individual_paths[ind_id].append(move)
 
-        # Sortera rörelser per individ efter steg
         for ind_id in individual_paths:
             individual_paths[ind_id].sort(key=lambda x: x['step'])
 
         maze_array = self.parse_maze_grid(maze_info['layout'])
 
-        # 1. Alla rutter
         ax = axes[0, 0]
         ax.imshow(maze_array, cmap='gray', alpha=0.3)
         for ind_id, path in individual_paths.items():
@@ -434,15 +424,13 @@ class RobotHeatmapGenerator:
             alpha = 0.8 if reached_goal else 0.3
             ax.plot(x_path, y_path, color=color, alpha=alpha, linewidth=1)
         ax.set_title('Alla Individuella Rutter')
-        
-        # Lägg till start/mål markörer
+
         start_pos = maze_info.get('start', [1, 1])
         goal_pos = maze_info.get('goal', [23, 23])
         ax.plot(start_pos[0], start_pos[1], 'bo', markersize=8, label='Start')
         ax.plot(goal_pos[0], goal_pos[1], 'rs', markersize=8, label='Mål')
         ax.legend()
 
-        # 2. Endast lyckade rutter
         ax = axes[0, 1]
         ax.imshow(maze_array, cmap='gray', alpha=0.3)
         successful_paths = {k: v for k, v in individual_paths.items() 
@@ -455,7 +443,6 @@ class RobotHeatmapGenerator:
         ax.plot(start_pos[0], start_pos[1], 'bo', markersize=8)
         ax.plot(goal_pos[0], goal_pos[1], 'rs', markersize=8)
 
-        # 3. Heatmap av startpositioner
         ax = axes[1, 0]
         start_positions = [(path[0]['x'], path[0]['y']) for path in individual_paths.values() if path]
         if start_positions:
@@ -463,7 +450,6 @@ class RobotHeatmapGenerator:
             ax.hexbin(x_starts, y_starts, gridsize=20, cmap='Blues')
             ax.set_title('Startpositioner Distribution')
 
-        # 4. Heatmap av slutpositioner
         ax = axes[1, 1]
         end_positions = [(path[-1]['x'], path[-1]['y']) for path in individual_paths.values() if path]
         if end_positions:
@@ -537,8 +523,7 @@ def main():
         title += f" - Generation {args.generation}"
     if args.best_only:
         title += " (Bästa individer)"
-    
-    # Kör olika typer av analyser
+
     if args.paths:
         generator.create_path_analysis(args.output.replace('.png', '_paths.png'))
     elif args.comparison:

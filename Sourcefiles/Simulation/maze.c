@@ -108,7 +108,7 @@ int **generate_labyrinthe(LabyrinthType type, int *width, int *height,
             return maze;
         }
         
-        // if not solvabel fre the maze 
+        // if not solvabel free the maze 
         free_matrix(maze, h);
     }
     
@@ -121,19 +121,19 @@ void place_goal_on_edge(int **maze, int width, int height, Simulationcontext *co
     int side = rand() % 4;
     
     switch (side) {
-        case 0: // Topp
+        case 0: // Top
             x = 1 + rand() % (width - 2);
             y = 0;
             break;
-        case 1: // Botten
+        case 1: // bottom
             x = 1 + rand() % (width - 2);
             y = height - 1;
             break;
-        case 2: // Vänster
+        case 2: // left
             x = 0;
             y = 1 + rand() % (height - 2);
             break;
-        case 3: // Höger
+        case 3: // right
             x = width - 1;
             y = 1 + rand() % (height - 2);
             break;
@@ -179,7 +179,7 @@ bool is_maze_solvable(int **maze, int width, int height, int start_x, int start_
     while (front < rear) {
         Point p = queue[front++];
         if (p.x == goal_x && p.y == goal_y) {
-            return true;  // Målet nådd!
+            return true;  // goal reached
         }
 
         for (int i=0; i<4; i++) {
@@ -195,7 +195,7 @@ bool is_maze_solvable(int **maze, int width, int height, int start_x, int start_
         }
     }
 
-    return false;  // Går ej att nå målet
+    return false;  // impossible to reache goal
 }
 
 

@@ -90,8 +90,6 @@ void mainmenu()
                 printf("\nEvolution completed!\n");
                 break;
 
-                
-            
             case 2:
                 analysis_submenu();
                 break;
@@ -152,10 +150,10 @@ void analysis_submenu() {
             case 1: {
                 printf("\nCreating basic heatmap...\n");
                 
-                // Windows-kommandon för att skapa mappar
+                // creates directories to store heatmaps in
                 system("if not exist \"data\\visualizations\\heatmaps\" mkdir \"data\\visualizations\\heatmaps\"");
                 
-                // Windows-kommando för Python
+                
                 char command[512];
                 snprintf(command, sizeof(command), 
                     "cd analysis && python heatmap_generator.py --input ..\\robot_log.json --maze ..\\maze_log.txt --output ..\\data\\visualizations\\heatmaps\\basic_heatmap.png");
