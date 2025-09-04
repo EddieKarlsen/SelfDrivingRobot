@@ -23,7 +23,7 @@ To run this program, you will need:
 ## Installation
 1. Clone this repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/EddieKarlsen/SelfDrivingRobot
 ```
 
 ## Usage
