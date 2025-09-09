@@ -49,7 +49,7 @@ cmake --build build
 ## How it works 
 the program uses a Genetic Algorithm to solve maze by:
 1. Initializing a population of solutions that has their uniqe attributes called chromosomes
-2. Evaluating their performance in the mazes note that a new maze is created after 25 generations this step i usually referred to as a fitness critera
+2. Evaluating their performance in the mazes note that a new maze is created after 25 generations
 3. selecting the best candidates to next generation in this programm im using elitism selection and
    these chosen individuals are used as parents for the other individuals in the next generation following whats called crossover and mutation.
 4. Repeating the process over multiple generations until the maximum generations has been meet
