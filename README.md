@@ -59,4 +59,5 @@ the program uses a Genetic Algorithm to solve maze by:
 - increase the readability
 - implement a better method for tracking energy usage
 - make the sensors more realistic as the current variant dosnt take into account such as noise
-- change the engine logic to a pwm based system 
+- change the engine logic to pwm
+- make an physical implementation of the robot
